@@ -40,6 +40,9 @@ export class Relay {
 }
 export default {
   async fetch(req, env) {
-    return env.RELAY.get(env.RELAY.idFromName('main')).fetch(req);
+    // plain HTTP (health check, browsers) must NOT touch the Durable Object:
+    // the object is created next to the FIRST request it receives, so it should be a player's WebSocket
+    if (req.headers.get('Upgrade') !== 'websocket') return new Response('Dead Zone relay OK');
+    return env.RELAY.get(env.RELAY.idFromName('r2')).fetch(req);
   },
 };
