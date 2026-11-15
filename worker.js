@@ -43,8 +43,6 @@ export default {
     // plain HTTP (health check, browsers) must NOT touch the Durable Object:
     // the object is created next to the FIRST request it receives, so it should be a player's WebSocket
     if (req.headers.get('Upgrade') !== 'websocket') return new Response('Dead Zone relay OK');
-    // NEW name ('r3') so a fresh object is created, with a placement hint: 'eeur' = Eastern Europe (closest region to Turkey)
-    const id = env.RELAY.idFromName('r3');
-    return env.RELAY.get(id, { locationHint: 'eeur' }).fetch(req);
+    return env.RELAY.get(env.RELAY.idFromName('r2')).fetch(req);
   },
 };
